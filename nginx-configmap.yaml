@@ -1,0 +1,29 @@
+# nginx-configmap.yaml
+apiVersion: v1 # Specifies the Kubernetes API version for ConfigMaps
+kind: ConfigMap # Defines the type of Kubernetes resource as a ConfigMap
+metadata:
+  name: nginx-custom-config # The name of your ConfigMap.
+  namespace: my-app-dev # Specifies the namespace where this ConfigMap will reside.
+data: # The data section contains the key-value pairs for your configuration.
+  # The key will be the filename when mounted as a volume.
+  nginx.conf: | # The '|' character allows for multi-line string input.
+    # This is a basic Nginx configuration.
+    events {
+      worker_connections 1024;
+    }
+
+    http {
+      server {
+        listen 80;
+        server_name localhost;
+
+        location / {
+          # Serve a simple index.html or return a message.
+          # In a real scenario, this would point to your application files.
+          return 200 "Hello from Nginx configured by ConfigMap!\n";
+          add_header Content-Type text/plain;
+        }
+      }
+    }
+  # You can add other key-value pairs here, for example:
+  # some_other_setting: "value"

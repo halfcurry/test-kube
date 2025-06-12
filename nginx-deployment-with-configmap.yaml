@@ -1,0 +1,33 @@
+# nginx-deployment-with-configmap.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment-configmap # A new name to distinguish it from previous deployments
+  namespace: my-app-dev
+  labels:
+    app: nginx-configmap # Unique label for this deployment
+spec:
+  replicas: 2 # Let's run two replicas
+  selector:
+    matchLabels:
+      app: nginx-configmap
+  template:
+    metadata:
+      labels:
+        app: nginx-configmap
+    spec:
+      containers:
+      - name: nginx-container
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+        volumeMounts: # This section mounts volumes into the container.
+        - name: nginx-config-volume # The name of the volume mount.
+          mountPath: /etc/nginx/nginx.conf # The path inside the container where the ConfigMap content will be mounted.
+          subPath: nginx.conf # This specifies that only the 'nginx.conf' key from the ConfigMap should be mounted here.
+                              # If omitted, the entire ConfigMap would be mounted as a directory.
+      volumes: # This section defines the volumes used by the Pod.
+      - name: nginx-config-volume # The name of the volume (must match volumeMounts.name).
+        configMap: # Specifies that this volume sources its data from a ConfigMap.
+          name: nginx-custom-config # The name of the ConfigMap to use.
+                                    # This must exist in the same namespace as the Pod.

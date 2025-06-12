@@ -175,10 +175,10 @@ You'll see the values encoded. To decode a specific value:
 
 ```bash
 # Example: Decode the username
-kubectl get secret my-database-credentials -n my-app-dev -o jsonpath='{.data.username}' | base64 --decode
+kubectl get secret my-database-credentials -n my-app-dev -o jsonpath='{.data.username}' | base64 --d
 
 # Example: Decode the password
-kubectl get secret my-database-credentials -n my-app-dev -o jsonpath='{.data.password}' | base64 --decode
+kubectl get secret my-database-credentials -n my-app-dev -o jsonpath='{.data.password}' | base64 -d
 ```
 
 ### Consuming the Secret in a Pod/Deployment
