@@ -1,0 +1,51 @@
+# my-app-ingress.yaml
+apiVersion: networking.k8s.io/v1 # Specifies the Kubernetes API version for Ingress
+kind: Ingress # Defines the type of Kubernetes resource as an Ingress
+metadata:
+  name: my-app-ingress # The name of your Ingress resource.
+  namespace: my-app-dev # Specifies the namespace where this Ingress will reside.
+  annotations:
+    # IMPORTANT: These annotations are specific to the Ingress Controller you are using.
+    # For Nginx Ingress Controller, these might be common. Other controllers will have different annotations.
+    # For example, if using Nginx Ingress Controller and you want to use regex paths:
+    # nginx.ingress.kubernetes.io/use-regex: "true"
+    # nginx.ingress.kubernetes.io/rewrite-target: /$2 # Example for path stripping if using regex
+spec:
+  # IngressClassName is required in Kubernetes 1.18+ for Ingress v1.
+  # This links the Ingress resource to a specific Ingress Controller.
+  # The value 'nginx' is common for the Nginx Ingress Controller.
+  ingressClassName: nginx # Replace with the name of your Ingress Controller if different.
+  rules: # Define the routing rules for incoming traffic.
+  - http: # Rules for HTTP traffic.
+      paths: # List of paths to match.
+      - path: /nginx # Path for Nginx application
+        pathType: Prefix # 'Prefix' means the path must start with '/nginx'.
+                         # Other types: 'Exact' (exact match), 'ImplementationSpecific'
+        backend: # Defines where to send the traffic.
+          service:
+            name: nginx-clusterip # The name of the target Service (must be a ClusterIP Service).
+            port:
+              number: 80 # The port of the target Service to send traffic to.
+      - path: /apache # Path for Apache application
+        pathType: Prefix
+        backend:
+          service:
+            name: apache-clusterip # The name of the target Service.
+            port:
+              number: 80
+  # You can also define host-based rules here, for example:
+  # - host: example.com
+  #   http:
+  #     paths:
+  #     - path: /
+  #       pathType: Prefix
+  #       backend:
+  #         service:
+  #           name: default-web-service
+  #           port:
+  #             number: 80
+  # You can also add TLS configuration here for HTTPS:
+  # tls:
+  # - hosts:
+  #   - myapp.example.com
+  #   secretName: myapp-tls-secret # Secret containing the TLS certificate and key

@@ -1,0 +1,14 @@
+# apache-clusterip-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: apache-clusterip # Name of the Apache Service
+  namespace: my-app-dev
+spec:
+  selector:
+    app: apache       # Selects Pods with the label `app: apache`
+  ports:
+    - protocol: TCP
+      port: 80        # The port on which the Service listens
+      targetPort: 80  # The port on the Pod (Apache container)
+  type: ClusterIP     # Exposes Apache internally within the cluster
