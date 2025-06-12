@@ -1,0 +1,15 @@
+# nginx-loadbalancer-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-loadbalancer # Name of the Service
+  namespace: my-app-dev
+spec:
+  selector:
+    app: nginx            # Selects Pods with the label `app: nginx`
+  ports:
+    - protocol: TCP
+      port: 80            # The port on which the LoadBalancer listens
+      targetPort: 80      # The port on the Pod to which the Service forwards traffic
+  type: LoadBalancer      # Defines the Service type as LoadBalancer.
+                          # On a cloud provider, this will provision an external IP address.

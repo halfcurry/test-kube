@@ -1,0 +1,16 @@
+# nginx-nodeport-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-nodeport # Name of the Service
+  namespace: my-app-dev
+spec:
+  selector:
+    app: nginx        # Selects Pods with the label `app: nginx`
+  ports:
+    - protocol: TCP
+      port: 80        # The port on which the Service listens
+      targetPort: 80  # The port on the Pod to which the Service forwards traffic
+      nodePort: 30080 # OPTIONAL: You can specify a desired nodePort (must be in the 30000-32767 range).
+                      # If omitted, Kubernetes will automatically assign one.
+  type: NodePort      # Defines the Service type as NodePort.
