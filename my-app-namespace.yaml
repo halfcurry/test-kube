@@ -1,0 +1,7 @@
+apiVersion: v1 # Specifies the Kubernetes API version
+kind: Namespace # Defines the type of Kubernetes resource
+metadata:
+  name: my-app-dev # The name of your new namespace. This name should be unique within the cluster.
+  labels:
+    environment: development # Optional: Add labels for organization or selection
+    project: my-app # Optional: Helps identify which project this namespace belongs to
