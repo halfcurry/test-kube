@@ -1,0 +1,15 @@
+apiVersion: v1 # Specifies the Kubernetes API version for Pods
+kind: Pod     # Defines the type of Kubernetes resource as a Pod
+metadata:
+  name: nginx-pod-example # The unique name of this Pod.
+  namespace: my-app-dev # IMPORTANT: Specifies the namespace where this Pod will be created.
+                        # This keeps our resources organized within the 'my-app-dev' environment.
+  labels:
+    app: nginx      # Labels are key-value pairs used to organize and select resources.
+                    # This label identifies this Pod as part of the 'nginx' application.
+spec:
+  containers:
+  - name: nginx-container # The name of the container within this Pod.
+    image: nginx:latest   # The Docker image to use for this container. 'nginx:latest' pulls the latest Nginx image.
+    ports:
+    - containerPort: 80 # The port that the container exposes. Nginx typically listens on port 80.

@@ -1,0 +1,28 @@
+# my-nginx-deployment.yaml
+apiVersion: apps/v1 # Specifies the Kubernetes API version for Deployments
+kind: Deployment # Defines the type of Kubernetes resource as a Deployment
+metadata:
+  name: nginx-deployment # The name of the Deployment
+  namespace: my-app-dev # Specifies the namespace where this Deployment (and its Pods) will be created.
+  labels:
+    app: nginx # Labels for the Deployment itself.
+spec:
+  replicas: 3 # IMPORTANT: This specifies the desired number of identical Pod replicas to run.
+              # The Deployment will continuously work to maintain this count.
+  selector:
+    matchLabels:
+      app: nginx # This selector tells the Deployment which Pods it should manage.
+                   # It will manage any Pods that have the label 'app: nginx'.
+                   # This MUST match the labels in the Pod template below.
+  template: # This is the Pod template, which describes the Pods that the Deployment will create.
+    metadata:
+      labels:
+        app: nginx # Labels to apply to the Pods created by this Deployment.
+                   # These labels are crucial for the 'selector' above to identify and manage these Pods.
+    spec:
+      containers:
+      - name: nginx-container # Name of the container within the Pod.
+        image: nginx:1.23.0 # Docker image to use. Using a specific version for better control.
+        ports:
+        - containerPort: 80 # Port exposed by the container.
+      # You can add more configurations here, like resource limits, environment variables, etc.
