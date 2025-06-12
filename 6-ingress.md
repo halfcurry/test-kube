@@ -220,6 +220,10 @@ Click on the "Add Port" button (or similar icon, often a plus sign).
 Enter the NodePort you identified in Step 1 (e.g., 30080).
 Codespaces will then forward this port from the container to a local URL (e.g., http://localhost:30080).
 
+```Bash
+kubectl -n ingress-nginx port-forward svc/ingress-nginx-controller 8080:80 --address 0.0.0.0
+```
+
 ## Conclusion
 
 Ingress provides a powerful and flexible way to manage external access to your services in Kubernetes. By centralizing routing rules and leveraging an Ingress Controller, you can efficiently expose multiple applications, handle SSL/TLS, and implement sophisticated traffic management within your cluster.

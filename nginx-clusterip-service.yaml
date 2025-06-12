@@ -6,7 +6,7 @@ metadata:
   namespace: my-app-dev # Specifies the namespace where this Service will be created.
 spec:
   selector:
-    app: nginx       # This is the key part: the Service will target Pods that have the label `app: nginx`.
+    app: nginx-configmap       # This is the key part: the Service will target Pods that have the label `app: nginx`.
                      # Ensure your Deployment's Pod template has this label.
   ports:
     - protocol: TCP  # The network protocol (TCP, UDP, SCTP).
