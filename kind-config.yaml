@@ -1,0 +1,41 @@
+kind: Cluster
+# apiVersion is the version of the Kind configuration API.
+apiVersion: kind.x-k8s.io/v1alpha4
+# name provides a name for your cluster.
+name: k8s-poc-cluster
+
+# 'nodes' is a list of nodes to create for the cluster.
+nodes:
+# The first node is designated as the control-plane. It runs the main
+# Kubernetes components like the API server and scheduler.
+- role: control-plane
+  # kubeadmConfigPatches allows us to inject custom configuration into the node.
+  # We are using it here to add a label to our node.
+  kubeadmConfigPatches:
+  - |
+    kind: InitConfiguration
+    nodeRegistration:
+      kubeletExtraArgs:
+        # We add a label "ingress-ready=true" to this node. This is a common
+        # practice to signal that an Ingress controller should be scheduled
+        # to run on this specific node.
+        node-labels: "ingress-ready=true"
+  # extraPortMappings is one of the most important sections for local development.
+  # It maps ports from the host (your Codespace) to the Kind "node" (a Docker container).
+  # This makes services inside the cluster accessible from your local machine.
+  extraPortMappings:
+  # Map port 80 on the host to port 80 on the control-plane node container.
+  # This is for standard HTTP traffic.
+  - containerPort: 80
+    hostPort: 80
+    protocol: TCP
+  # Map port 443 on the host to port 443 on the control-plane node container.
+  # This is for secure HTTPS traffic.
+  - containerPort: 443
+    hostPort: 443
+    protocol: TCP
+
+# These nodes are designated as 'workers'. Their primary job is to run
+# the actual application Pods you deploy.
+- role: worker
+- role: worker
