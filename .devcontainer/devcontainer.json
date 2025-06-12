@@ -3,7 +3,7 @@
 {
     "name": "kubernetes-tutorial-basic",
     "build": {
-      "dockerfile": "dockerfile",
+      "dockerfile": "Dockerfile",
       "args": { "KIND_VERSION": "0.29.0" }
     },
     "mounts": ["type=bind,source=/var/run/docker.sock,target=/var/run/docker.sock"],
