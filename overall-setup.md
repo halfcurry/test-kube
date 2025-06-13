@@ -46,6 +46,4 @@ kubectl get svc -n ingress-nginx ingress-nginx-controller
 
 kubectl -n ingress-nginx port-forward svc/ingress-nginx-controller 8080:80 --address 0.0.0.0
 
-
-
 ```
