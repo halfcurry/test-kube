@@ -1,3 +1,6 @@
+//THANKS TO https://github.com/marcel-dempers/docker-development-youtube-series 
+// SOURCE FOR THIS DEVCONTAINER AND DOCKERFILE FOR KIND IN CODESPACES: 
+// https://github.com/marcel-dempers/docker-development-youtube-series/blob/master/.devcontainer/devcontainer.json
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.162.0/containers/javascript-node
 {
