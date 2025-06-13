@@ -1,0 +1,27 @@
+# my-app-with-pvc-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app-with-pvc
+  namespace: my-realistic-app
+spec:
+  selector:
+    matchLabels:
+      app: my-pvc-app # This label must match the one in template.metadata.labels
+  template:
+    metadata:
+      # Labels for the pods created by this deployment.
+      # These labels are used by the selector above.
+      labels:
+        app: my-pvc-app # This label ensures the pod is managed by this deployment
+    spec:
+      containers:
+      - name: nginx-container
+        image: nginx:latest
+        volumeMounts:
+        - name: persistent-storage
+          mountPath: /usr/share/nginx/html/data # Mount path in container
+      volumes:
+      - name: persistent-storage
+        persistentVolumeClaim:
+          claimName: my-pvc-claim # Reference the PVC

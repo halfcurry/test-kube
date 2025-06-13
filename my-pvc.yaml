@@ -1,0 +1,12 @@
+# my-pvc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: my-pvc-claim
+  namespace: my-realistic-app
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Mi # Requesting 500Mi of storage

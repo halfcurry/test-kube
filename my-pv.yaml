@@ -1,0 +1,12 @@
+# my-pv.yaml
+    apiVersion: v1
+    kind: PersistentVolume
+    metadata:
+      name: my-pv-volume
+    spec:
+      capacity:
+        storage: 1Gi # Size of the volume
+      accessModes:
+        - ReadWriteOnce # Can be mounted as read-write by a single node
+      hostPath: # For Kind, we still use hostPath here
+        path: "/mnt/data" # Path on the node where data will live

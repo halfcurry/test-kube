@@ -36,10 +36,12 @@ kubectl describe service -n my-app-dev nginx-clusterip
 
 kubectl get pods -n my-app-dev -l app=apache -o jsonpath='{.items[0].metadata.name}'
 
+# Accessing pod shell
 kubectl exec -it <YOUR_APACHE_POD_NAME> -n my-app-dev -- sh
 
 curl http://localhost:80/
 
+# Accessing pod shell of any one container
 kubectl exec -it $(kubectl get pods -n my-app-dev -l app=nginx-configmap -o jsonpath='{.items[0].metadata.name}') -n my-app-dev -- sh
 
 curl http://apache-clusterip/

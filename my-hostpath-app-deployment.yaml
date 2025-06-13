@@ -1,0 +1,30 @@
+# my-hostpath-app-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app-with-volume
+  namespace: my-realistic-app # Ensure this matches your namespace
+spec:
+  # This selector defines which pods this deployment manages.
+  # It must match the labels defined in the pod template below.
+  selector:
+    matchLabels:
+      app: my-volume-app # This label must match the one in template.metadata.labels
+  template:
+    metadata:
+      # Labels for the pods created by this deployment.
+      # These labels are used by the selector above.
+      labels:
+        app: my-volume-app # This label ensures the pod is managed by this deployment
+    spec:
+      containers:
+      - name: nginx-container
+        image: nginx:latest
+        volumeMounts:
+        - name: my-data-volume
+          mountPath: /usr/share/nginx/html/data # Mount point inside the container
+      volumes:
+      - name: my-data-volume
+        hostPath:
+          path: /tmp/nginx-data # Path on the Kind node where data will be stored
+          type: DirectoryOrCreate # Ensures the directory exists or creates it
