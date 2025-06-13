@@ -1,0 +1,67 @@
+# demo-project-2/kubernetes/09-backend-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chatbot-backend-deployment
+  namespace: demo-project-2-ns
+  labels:
+    app: chatbot-backend
+spec:
+  replicas: 2 # Scale out the backend for resilience
+  selector:
+    matchLabels:
+      app: chatbot-backend
+  template:
+    metadata:
+      labels:
+        app: chatbot-backend
+    spec:
+      containers:
+      - name: chatbot-backend-container
+        image: chatbot-backend:1.0 # Image built from backend/Dockerfile
+        ports:
+        - containerPort: 5000 # Flask app port
+        env:
+        # Pass DB connection details from Secret and Service
+        - name: DB_HOST
+          value: postgres-db-clusterip # Service name provides stable internal DNS
+        - name: DB_NAME
+          value: chatbot_db
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: postgres-credentials
+              key: username
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-credentials
+              key: password
+        # Pass Redis connection details from Service
+        - name: REDIS_HOST
+          value: redis-mq-clusterip # Service name provides stable internal DNS
+        - name: REDIS_PORT
+          value: "6379" # Redis port
+        # Pass AI prompt from ConfigMap
+        - name: AI_PROMPT
+          valueFrom:
+            configMapKeyRef:
+              name: chatbot-backend-config
+              key: ai_prompt
+        # Liveness and Readiness probes for health checking
+        livenessProbe:
+          httpGet:
+            path: /healthz # Health endpoint in app.py
+            port: 5000
+          initialDelaySeconds: 10 # Wait 10s before first check
+          periodSeconds: 5 # Check every 5s
+          timeoutSeconds: 2 # Timeout after 2s
+          failureThreshold: 3 # Restart after 3 failures
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 5000
+          initialDelaySeconds: 5 # Wait 5s before first check
+          periodSeconds: 5
+          timeoutSeconds: 2
+          failureThreshold: 1 # Stop sending traffic after 1 failure

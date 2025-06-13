@@ -1,0 +1,14 @@
+# demo-project-2/kubernetes/13-frontend-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: chatbot-frontend-clusterip # Internal DNS name for the frontend
+  namespace: demo-project-2-ns
+spec:
+  selector:
+    app: chatbot-frontend # Matches the frontend deployment pods
+  ports:
+    - protocol: TCP
+      port: 80 # Service port
+      targetPort: 80 # Nginx container port
+  type: ClusterIP

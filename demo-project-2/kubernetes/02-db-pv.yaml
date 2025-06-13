@@ -1,0 +1,15 @@
+# demo-project-2/kubernetes/02-db-pv.yaml
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: postgres-pv-volume # Name of the Persistent Volume
+spec:
+  capacity:
+    storage: 2Gi # Capacity of the volume
+  accessModes:
+    - ReadWriteOnce # Can be mounted as read-write by a single node
+  persistentVolumeReclaimPolicy: Retain # Retain data even if PVC is deleted
+  storageClassName: manual # Custom storage class name
+  hostPath: # For Kind, we use hostPath to simulate persistent storage on the node
+    path: "/mnt/data/postgres" # Directory on the Kind node
+    type: DirectoryOrCreate # Create if it doesn't exist

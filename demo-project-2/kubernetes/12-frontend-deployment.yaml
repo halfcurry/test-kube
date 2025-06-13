@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chatbot-frontend-deployment
+  namespace: demo-project-2-ns
+  labels:
+    app: chatbot-frontend
+spec:
+  replicas: 1 # Single replica for the frontend
+  selector:
+    matchLabels:
+      app: chatbot-frontend
+  template:
+    metadata:
+      labels:
+        app: chatbot-frontend
+    spec:
+      containers:
+      - name: frontend-nginx-container
+        image: nginx:latest # Standard Nginx image
+        ports:
+        - containerPort: 80 # Nginx listens on port 80
+        volumeMounts:
+        - name: html-volume # Mounts the HTML content from ConfigMap
+          mountPath: /usr/share/nginx/html/index.html # Specific file path for index.html
+          subPath: index.html # Mounts only the 'index.html' key from the ConfigMap
+      volumes:
+      - name: html-volume # Volume definition for the ConfigMap
+        configMap:
+          name: chatbot-frontend-html # Name of the ConfigMap to use

@@ -1,0 +1,7 @@
+# demo-project-2/kubernetes/00-namespace.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: demo-project-2-ns # Dedicated namespace for this project
+  labels:
+    project: chatbot-demo

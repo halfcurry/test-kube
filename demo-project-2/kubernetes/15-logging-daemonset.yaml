@@ -1,0 +1,32 @@
+# demo-project-2/kubernetes/15-logging-daemonset.yaml
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: node-logger-daemonset
+  namespace: demo-project-2-ns # Logs for this demo project
+  labels:
+    app: node-logger
+spec:
+  selector:
+    matchLabels:
+      app: node-logger
+  template:
+    metadata:
+      labels:
+        app: node-logger
+    spec:
+      # This toleration allows the DaemonSet to run on the control-plane node too in Kind.
+      # In a real cluster, you might only target worker nodes or have specific node selectors.
+      tolerations:
+      - key: node-role.kubernetes.io/control-plane
+        operator: Exists
+        effect: NoSchedule
+      containers:
+      - name: logger-container
+        image: busybox:latest # A very light image
+        command: ["/bin/sh", "-c", "while true; do echo 'Node-Logger: Hostname is $(HOSTNAME) - Pod IP is $(POD_IP)'; sleep 10; done"]
+        env:
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP # Injects the Pod's IP into an env var

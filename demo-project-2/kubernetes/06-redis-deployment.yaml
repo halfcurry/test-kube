@@ -1,0 +1,23 @@
+# demo-project-2/kubernetes/06-redis-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis-deployment
+  namespace: demo-project-2-ns
+  labels:
+    app: redis-mq
+spec:
+  replicas: 1 # A single replica for Redis
+  selector:
+    matchLabels:
+      app: redis-mq
+  template:
+    metadata:
+      labels:
+        app: redis-mq
+    spec:
+      containers:
+      - name: redis-container
+        image: redis:6 # Redis image
+        ports:
+        - containerPort: 6379 # Default Redis port

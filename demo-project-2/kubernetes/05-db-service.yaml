@@ -1,0 +1,14 @@
+# demo-project-2/kubernetes/05-db-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-db-clusterip # Internal DNS name for the database
+  namespace: demo-project-2-ns
+spec:
+  selector:
+    app: postgres-db # Matches the database deployment pods
+  ports:
+    - protocol: TCP
+      port: 5432 # Service port
+      targetPort: 5432 # Target container port
+  type: ClusterIP

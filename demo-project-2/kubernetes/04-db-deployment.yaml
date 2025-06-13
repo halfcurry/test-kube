@@ -1,0 +1,43 @@
+# demo-project-2/kubernetes/04-db-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-db-deployment
+  namespace: demo-project-2-ns
+  labels:
+    app: postgres-db
+spec:
+  replicas: 1 # A single replica for the database
+  selector:
+    matchLabels:
+      app: postgres-db
+  template:
+    metadata:
+      labels:
+        app: postgres-db
+    spec:
+      containers:
+      - name: postgres-db-container
+        image: postgres:13 # PostgreSQL image
+        ports:
+        - containerPort: 5432 # Default PostgreSQL port
+        env:
+        - name: POSTGRES_DB # Database name
+          value: chatbot_db
+        - name: POSTGRES_USER # Database user (from secret)
+          valueFrom:
+            secretKeyRef:
+              name: postgres-credentials
+              key: username
+        - name: POSTGRES_PASSWORD # Database password (from secret)
+          valueFrom:
+            secretKeyRef:
+              name: postgres-credentials
+              key: password
+        volumeMounts:
+        - name: postgres-storage # Mount the PVC
+          mountPath: /var/lib/postgresql/data # Default data directory for Postgres
+      volumes:
+      - name: postgres-storage
+        persistentVolumeClaim:
+          claimName: postgres-pv-claim # Reference the PVC

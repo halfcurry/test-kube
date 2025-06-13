@@ -1,0 +1,9 @@
+# demo-project-2/kubernetes/08-backend-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: chatbot-backend-config # Name of the ConfigMap
+  namespace: demo-project-2-ns
+data:
+  ai_prompt: "You are a witty and helpful chatbot designed for Kubernetes enthusiasts. Respond concisely."
+  # You could add other configuration here, e.g., API_URL for an external LLM

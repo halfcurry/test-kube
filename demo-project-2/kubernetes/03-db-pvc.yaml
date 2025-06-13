@@ -1,0 +1,13 @@
+# demo-project-2/kubernetes/03-db-pvc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pv-claim # Name of the Persistent Volume Claim
+  namespace: demo-project-2-ns # Must be in the same namespace
+spec:
+  accessModes:
+    - ReadWriteOnce # Must match accessModes of the PV
+  resources:
+    requests:
+      storage: 1Gi # Requesting 1Gi of storage
+  storageClassName: manual # Must match storageClassName of the PV

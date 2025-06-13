@@ -1,0 +1,14 @@
+# demo-project-2/kubernetes/07-redis-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis-mq-clusterip # Internal DNS name for Redis
+  namespace: demo-project-2-ns
+spec:
+  selector:
+    app: redis-mq # Matches the Redis deployment pods
+  ports:
+    - protocol: TCP
+      port: 6379 # Service port
+      targetPort: 6379 # Target container port
+  type: ClusterIP
