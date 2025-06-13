@@ -210,19 +210,15 @@ kubectl get svc -n ingress-nginx ingress-nginx-controller
 Look at the PORT(S) column in the output. You'll likely see something like 80:3xxxx/TCP,443:3yyyy/TCP. The 3xxxx is the NodePort for HTTP traffic (port 80) and 3yyyy is for HTTPS traffic (port 443). Make a note of the HTTP NodePort (e.g., 30080).
 
 ### Step 2: Forward the NodePort in Codespaces
-You have two main ways to forward this port in Codespaces:
-
-Option A: Manual Port Forwarding (Temporary)
-This is good for quick testing:
-
-In your VS Code or Codespaces web interface, open the PORTS tab (usually at the bottom panel next to "TERMINAL" and "PROBLEMS").
-Click on the "Add Port" button (or similar icon, often a plus sign).
-Enter the NodePort you identified in Step 1 (e.g., 30080).
-Codespaces will then forward this port from the container to a local URL (e.g., http://localhost:30080).
 
 ```Bash
 kubectl -n ingress-nginx port-forward svc/ingress-nginx-controller 8080:80 --address 0.0.0.0
 ```
+kubectl port-forward is a way to temporarily expose your ingress-nginx-controller service and test your Ingress rules, especially in development environments like Codespaces where external IP addresses from NodePort or LoadBalancer might not be immediately obvious or reliable.
+
+Now, just forward the port manually and make it public on Codespaces, and then you should be able to access /apache and /nginx paths for the `codespaces_url:8080`.
+
+Check debugging.md for debugging commands. 
 
 ## Conclusion
 
