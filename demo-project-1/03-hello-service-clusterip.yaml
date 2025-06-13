@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-service-clusterip # Name of the Service
+  namespace: my-realistic-app
+spec:
+  selector:
+    app: hello-service # Matches the label on the hello-service Pods
+  ports:
+    - protocol: TCP
+      port: 80 # Service port (internal to cluster)
+      targetPort: 5000 # Port on the Pod that the service targets (Flask app port)
+  type: ClusterIP # Exposes the service internally within the cluster

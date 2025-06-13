@@ -1,0 +1,8 @@
+# 01-hello-service-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hello-service-config # Name of the ConfigMap
+  namespace: my-realistic-app # Must be in the same namespace as the service and deployment
+data:
+  hello_message: "Hello from the Kubernetes Backend!" # The message our Flask app will serve

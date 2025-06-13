@@ -1,0 +1,14 @@
+# 09-frontend-clusterip.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-clusterip # Name of the Service
+  namespace: my-realistic-app
+spec:
+  selector:
+    app: frontend # Matches the label on the frontend Pods
+  ports:
+    - protocol: TCP
+      port: 80 # Service port
+      targetPort: 80 # Nginx container port
+  type: ClusterIP # Exposes the service internally

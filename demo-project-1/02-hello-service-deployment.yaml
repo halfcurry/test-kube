@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-service-deployment # Name of the Deployment
+  namespace: my-realistic-app
+  labels:
+    app: hello-service # Label for selector to pick up
+spec:
+  replicas: 2 # We want two instances of our hello service
+  selector:
+    matchLabels:
+      app: hello-service # Matches the label in the Pod template
+  template:
+    metadata:
+      labels:
+        app: hello-service # Label for the Pods created by this Deployment
+    spec:
+      containers:
+      - name: hello-app-container # Name of the container
+        image: localhost:5001/hello-service:1.0 # REPLACED: Image path for local registry
+        ports:
+        - containerPort: 5000 # Flask app listens on port 5000
+        env: # Injecting the message from ConfigMap as an environment variable
+        - name: HELLO_MESSAGE # Environment variable name in the container
+          valueFrom:
+            configMapKeyRef:
+              name: hello-service-config # Name of the ConfigMap
+              key: hello_message # Key from the ConfigMap to use

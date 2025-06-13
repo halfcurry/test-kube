@@ -1,0 +1,43 @@
+# 10-realistic-app-ingress.yaml
+apiVersion: networking.k8s.io/v1 # Ingress API version
+kind: Ingress # Type of Kubernetes resource
+metadata:
+  name: realistic-app-ingress # Name of the Ingress resource
+  namespace: my-realistic-app # Ingress should be in the same namespace as services
+  annotations:
+    # Essential for Nginx Ingress Controller to rewrite paths for backend services
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    # Enables regex matching for the paths defined below
+    nginx.ingress.kubernetes.io/use-regex: "true"
+spec:
+  ingressClassName: nginx # Specifies which Ingress Controller will handle this Ingress
+  rules:
+  - http:
+      paths:
+      # Rule for the Frontend UI: serves content at the root path '/'
+      - path: / # Matches the root path
+        pathType: Prefix # Matches any path starting with /
+        backend:
+          service:
+            name: frontend-clusterip # Directs traffic to the frontend service
+            port:
+              number: 80 # Port of the frontend service
+
+      # Rule for Hello Service API: routes /api/hello to the hello-service
+      # The regex (.*) captures everything after /api/hello and passes it as $2 to rewrite-target
+      - path: /api/hello(/|$)(.*) # Matches /api/hello, optionally followed by / and then anything else
+        pathType: Prefix
+        backend:
+          service:
+            name: hello-service-clusterip # Directs traffic to the hello service
+            port:
+              number: 80 # Port of the hello service
+
+      # Rule for Greet Service API: routes /api/greet to the greet-service
+      - path: /api/greet(/|$)(.*) # Matches /api/greet, optionally followed by / and then anything else
+        pathType: Prefix
+        backend:
+          service:
+            name: greet-service-clusterip # Directs traffic to the greet service
+            port:
+              number: 80 # Port of the greet service

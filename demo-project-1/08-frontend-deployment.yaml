@@ -1,0 +1,31 @@
+# 08-frontend-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment # Name of the Deployment
+  namespace: my-realistic-app
+  labels:
+    app: frontend # Label for selector to pick up
+spec:
+  replicas: 1 # A single replica for the frontend
+  selector:
+    matchLabels:
+      app: frontend # Matches the label in the Pod template
+  template:
+    metadata:
+      labels:
+        app: frontend # Label for the Pods created by this Deployment
+    spec:
+      containers:
+      - name: frontend-nginx-container # Name of the container
+        image: nginx:latest # Standard Nginx image
+        ports:
+        - containerPort: 80 # Nginx listens on port 80
+        volumeMounts:
+        - name: html-volume # Mounts the HTML content from ConfigMap
+          mountPath: /usr/share/nginx/html/index.html # Specific file path for index.html
+          subPath: index.html # Mounts only the 'index.html' key from the ConfigMap
+      volumes:
+      - name: html-volume # Volume definition for the ConfigMap
+        configMap:
+          name: frontend-html # Name of the ConfigMap to use

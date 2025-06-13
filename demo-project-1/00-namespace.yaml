@@ -1,0 +1,7 @@
+# 00-namespace.yaml
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: my-realistic-app # Dedicated namespace for our POC application
+  labels:
+    app.kubernetes.io/name: realistic-poc # A label for the application

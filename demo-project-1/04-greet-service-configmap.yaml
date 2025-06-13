@@ -1,0 +1,8 @@
+# 04-greet-service-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: greet-service-config
+  namespace: my-realistic-app
+data:
+  greet_message: "Greetings from the Kubernetes Backend!"
