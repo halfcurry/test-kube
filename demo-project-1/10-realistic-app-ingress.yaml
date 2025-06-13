@@ -6,7 +6,7 @@ metadata:
   namespace: my-realistic-app # Ingress should be in the same namespace as services
   annotations:
     # Essential for Nginx Ingress Controller to rewrite paths for backend services
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    nginx.ingress.kubernetes.io/rewrite-target: /$1$2
     # Enables regex matching for the paths defined below
     nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
@@ -25,7 +25,7 @@ spec:
 
       # Rule for Hello Service API: routes /api/hello to the hello-service
       # The regex (.*) captures everything after /api/hello and passes it as $2 to rewrite-target
-      - path: /api/hello(/|$)(.*) # Matches /api/hello, optionally followed by / and then anything else
+      - path: /api/(hello)(/|$)(.*) # Matches /api/hello, capture 'hello' as $1, any subpath as $3
         pathType: Prefix
         backend:
           service:
@@ -34,7 +34,7 @@ spec:
               number: 80 # Port of the hello service
 
       # Rule for Greet Service API: routes /api/greet to the greet-service
-      - path: /api/greet(/|$)(.*) # Matches /api/greet, optionally followed by / and then anything else
+      - path: /api/(greet)(/|$)(.*) # Matches /api/greet, capture 'greet' as $1, any subpath as $3
         pathType: Prefix
         backend:
           service:

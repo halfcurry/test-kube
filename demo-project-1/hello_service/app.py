@@ -1,5 +1,6 @@
 # hello_service/app.py
-from flask import Flask, os
+from flask import Flask
+import os
 
 app = Flask(__name__)
 

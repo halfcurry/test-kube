@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: greet-app-container
-        image: localhost:5001/greet-service:1.0 # REPLACED: Image path for local registry
+        image: greet-service:1.0 # CHANGED: Image path for direct Kind load
         ports:
         - containerPort: 5000
         env:

@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: hello-app-container # Name of the container
-        image: localhost:5001/hello-service:1.0 # REPLACED: Image path for local registry
+        image: hello-service:1.0
         ports:
         - containerPort: 5000 # Flask app listens on port 5000
         env: # Injecting the message from ConfigMap as an environment variable
